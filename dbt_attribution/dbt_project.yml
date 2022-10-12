@@ -1,0 +1,23 @@
+name: attribution
+profile: dbt_dwh_models
+version: '0.1'
+require-dbt-version: [">=1.0.0", "<2.0.0"]
+config-version: 2
+
+model-paths: [models]
+analysis-paths: [analysis]
+test-paths: [tests]
+macro-paths: [macros]
+
+target-path: target
+
+quoting:
+  database: false
+  identifier: false
+  schema: false
+
+seeds:
+  quote_columns: false
+
+models:
+  transient: true

@@ -1,0 +1,1 @@
+select * from {{source('attribution', 'raw_customer_conversions')}}

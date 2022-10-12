@@ -1,0 +1,46 @@
+version: 2
+
+sources:
+  - name: attribution
+    database: anna
+    schema: anna_demo
+    tables:
+      - name: raw_ad_spend
+      - name: raw_customer_conversions
+      - name: raw_sessions
+
+models:
+  - name: stg_customer_conversions
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_ad_spend
+    columns:
+      - name: date_day
+        tests:
+          - unique
+          - not_null
+      - name: utm_source
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['adwords', 'facebook_ads', 'newsletter', 'criteo', 'twitter', 'email', 'linkedin', 'google', 'bing']
+      - name: utm_medium
+        tests:
+          - accepted_values:
+              values: [ 'paid_search', 'paid_social', 'email', 'search']
+
+  - name: stg_sessions
+    columns:
+      - name: utm_source
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['adwords', 'facebook_ads', 'newsletter', 'criteo', 'twitter', 'email', 'linkedin', 'google', 'bing']
+      - name: utm_medium
+        tests:
+          - accepted_values:
+              values: [ 'paid_search', 'paid_social', 'email', 'search']
