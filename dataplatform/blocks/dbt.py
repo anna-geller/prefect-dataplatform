@@ -37,7 +37,7 @@ class Dbt(Block):
 
     workspace: Workspace
     path_to_dbt_project: str
-    retries: int = 3
+    retries: int = 1
     retry_delay_seconds: int = 10
     metadata: Any = Field(
         default=dict(dbt_project_owner="Analytics Engineering Team"),
@@ -102,8 +102,10 @@ class Dbt(Block):
             wait_for=[future_run, *upstream_tasks],
         )
         state_test = future_test.wait()
-        self.workspace.send_alert_on_failure(state_run, cmd_run)
-        self.workspace.send_alert_on_failure(state_test, cmd_test)
+        alert_run = cmd_run.replace(" --no-write-json", "")
+        alert_test = cmd_test.replace(" --no-write-json", "")
+        self.workspace.send_alert_on_failure(state_run, alert_run)
+        self.workspace.send_alert_on_failure(state_test, alert_test)
         return future_test
 
     def dbt_run_from_manifest(self):

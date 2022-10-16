@@ -57,7 +57,7 @@ class Workspace(Block):
             .replace("app/accounts", "account")
             .replace("workspaces", "workspace")
         )
-        return f"{ui_url}/task-run/{task_run_id}"
+        return f"{ui_url}/flow-runs/task-run/{task_run_id}"
 
     def send_alert_on_failure(self, state, failure_reason: str = None):
         task_run_id = state.state_details.task_run_id
