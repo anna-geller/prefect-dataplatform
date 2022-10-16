@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from prefect import flow, task
 from flows.ingestion.marketing_config import Frequency, campaigns, channels
-from dataplatform.blocks.snowflake_schema import SnowflakeSchema
+from dataplatform.blocks.snowflake_pandas import SnowflakePandas
 
 
 @task(retries=3, retry_delay_seconds=30)
@@ -47,15 +47,15 @@ def clean_utm_medium(df: pd.DataFrame) -> pd.DataFrame:
 
 @task(retries=3, retry_delay_seconds=30)
 def load(df: pd.DataFrame, table_name: str) -> None:
-    schema = SnowflakeSchema.load("default")
-    schema.load_raw_data(df, table_name)
+    block = SnowflakePandas.load("default")
+    block.load_raw_data(df, table_name)
 
 
 @flow(retries=3, retry_delay_seconds=30)
 def raw_ad_spend(
-    start_date: date = date(2020, 2, 1),
-    end_date: date = date.today(),
-    interval: Frequency = "D",
+        start_date: date = date(2020, 2, 1),
+        end_date: date = date.today(),
+        interval: Frequency = "D",
 ) -> None:
     df = pd.DataFrame(
         pd.date_range(start=start_date, end=end_date, freq=interval),
@@ -73,9 +73,9 @@ def raw_ad_spend(
 
 @flow(retries=3, retry_delay_seconds=30)
 def raw_sessions_and_conversions(
-    start_date: date = date(2020, 2, 1),
-    end_date: date = date.today(),
-    interval: Frequency = "D",
+        start_date: date = date(2020, 2, 1),
+        end_date: date = date.today(),
+        interval: Frequency = "D",
 ) -> None:
     df = pd.DataFrame(
         pd.date_range(start=start_date, end=end_date, freq=interval),
@@ -92,17 +92,17 @@ def raw_sessions_and_conversions(
     load(df, "raw_sessions")
     conv = (
         df[["customer_id", "ended_at", "session_id"]]
-        .groupby(["customer_id"], as_index=False)
-        .agg(converted_at=("ended_at", "max"), revenue=("session_id", "count"))
+            .groupby(["customer_id"], as_index=False)
+            .agg(converted_at=("ended_at", "max"), revenue=("session_id", "count"))
     )
     load(conv, "raw_customer_conversions")
 
 
 @flow(retries=3, retry_delay_seconds=30)
 def raw_data_marketing(
-    start_date: date = date(2020, 2, 1),  # parametrized for backfills
-    end_date: date = date.today(),
-    interval: Frequency = "D",
+        start_date: date = date(2020, 2, 1),  # parametrized for backfills
+        end_date: date = date.today(),
+        interval: Frequency = "D",
 ):
     raw_ad_spend(start_date, end_date, interval)
     raw_sessions_and_conversions(start_date, end_date, interval)

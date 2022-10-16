@@ -4,13 +4,13 @@ import pandas as pd
 from prefect import flow, task
 import random
 
-from dataplatform.blocks.snowflake_schema import SnowflakeSchema
+from dataplatform.blocks.snowflake_pandas import SnowflakePandas
 
 fake = Faker()
 
 
 def random_date(
-    start_date: date = date(2020, 2, 1), end_date: date = date.today()
+        start_date: date = date(2020, 2, 1), end_date: date = date.today()
 ) -> str:
     delta = end_date - start_date
     int_delta = (delta.days * 24 * 60 * 60) + delta.seconds
@@ -38,7 +38,7 @@ def ingest_raw_payments(sample_size=100):
 
 @task(retries=3, retry_delay_seconds=30)
 def ingest_raw_orders(
-    sample_size=100, start_date: date = date(2020, 2, 1), end_date: date = date.today()
+        sample_size=100, start_date: date = date(2020, 2, 1), end_date: date = date.today()
 ):
     output = [
         {
@@ -72,15 +72,15 @@ def ingest_raw_customers(sample_size=100):
 
 
 def load(df: pd.DataFrame, table_name: str) -> None:
-    schema = SnowflakeSchema.load("default")
-    schema.load_raw_data(df, table_name)
+    block = SnowflakePandas.load("default")
+    block.load_raw_data(df, table_name)
 
 
 @flow(retries=3, retry_delay_seconds=30)
 def raw_data_jaffle_shop(
-    start_date: date = date(2020, 2, 1),
-    end_date: date = date.today(),
-    dataset_size: int = 10_000,  # parametrized for backfills
+        start_date: date = date(2020, 2, 1),
+        end_date: date = date.today(),
+        dataset_size: int = 10_000,  # parametrized for backfills
 ):
     ingest_raw_customers.submit(dataset_size)
     ingest_raw_orders.submit(dataset_size, start_date, end_date)

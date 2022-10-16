@@ -13,7 +13,7 @@ class Dbt(Block):
     A block for interacting with dbt
 
     Args:
-        workspace: key-value pairs about your dbt project
+        workspace: a Workspace block including key-value pairs about your dbt project
         path_to_dbt_project: relative or absolute path to your project as a string
         retries: max number of retries for any dbt task or flow
         retry_delay_seconds: delay between retries in seconds

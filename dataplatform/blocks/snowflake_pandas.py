@@ -6,7 +6,7 @@ from prefect_snowflake.database import SnowflakeConnector
 from sqlalchemy import create_engine
 
 
-class SnowflakeSchema(Block):
+class SnowflakePandas(Block):
 
     """
     Interact with a Snowflake schema using Pandas.
@@ -18,12 +18,12 @@ class SnowflakeSchema(Block):
     Example:
         Load stored block:
         ```python
-        from dataplatform.blocks import SnowflakeSchema
-        schema_block = SnowflakeSchema.load("BLOCK_NAME")
+        from dataplatform.blocks import SnowflakePandas
+        block = SnowflakePandas.load("BLOCK_NAME")
         ```
     """  # noqa
 
-    _block_type_name = "Snowflake Schema"
+    _block_type_name = "Snowflake Pandas"
     _logo_url = "https://images.ctfassets.net/gm98wzqotmnx/2DxzAeTM9eHLDcRQx1FR34/f858a501cdff918d398b39365ec2150f/snowflake.png?h=250"  # noqa
     _block_schema_capabilities = ["load_raw_data", "read_sql"]
     snowflake_connector: SnowflakeConnector
