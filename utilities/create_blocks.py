@@ -3,22 +3,22 @@ from dataplatform.blocks.dbt import Dbt
 from dataplatform.blocks.workspace import Workspace
 from dataplatform.blocks.snowflake_pandas import SnowflakePandas
 from dataplatform.environment import get_env
-from dataplatform.deploy_utils import save_block
+from dataplatform.deploy_utils import save_block, DEFAULT_BLOCK
 import os
 from prefect_snowflake.credentials import SnowflakeCredentials
 from prefect_snowflake.database import SnowflakeConnector
 from prefect_dbt.cli.configs import SnowflakeTargetConfigs
 from prefect_dbt.cli.credentials import DbtCliProfile
-from prefect.filesystems import S3, GCS, Azure
+from prefect_dbt.cloud import DbtCloudCredentials
+from prefect.filesystems import S3, GCS, Azure, GitHub
 from prefect.blocks.notifications import SlackWebhook
 
 
 load_dotenv()
 
-DEFAULT_BLOCK = "default"
 
-slack = SlackWebhook(url=os.environ.get("SLACK_WEBHOOK_URL", "dummy"))
-save_block(slack, DEFAULT_BLOCK)
+slack = SlackWebhook(url=os.environ.get("SLACK_WEBHOOK_URL", DEFAULT_BLOCK))
+save_block(slack)
 
 
 workspace = Workspace(
@@ -26,23 +26,23 @@ workspace = Workspace(
     block_name=DEFAULT_BLOCK,
     settings=dict(workspace_owner="Data Engineering", environment="Development"),
 )
-save_block(workspace, DEFAULT_BLOCK)
+save_block(workspace)
 
 snowflake_creds = SnowflakeCredentials(
-    user=os.environ.get("SNOWFLAKE_USER", "dummy"),
-    password=os.environ.get("SNOWFLAKE_PASSWORD", "dummy"),
-    account=os.environ.get("SNOWFLAKE_ACCOUNT", "dummy"),
+    user=os.environ.get("SNOWFLAKE_USER", DEFAULT_BLOCK),
+    password=os.environ.get("SNOWFLAKE_PASSWORD", DEFAULT_BLOCK),
+    account=os.environ.get("SNOWFLAKE_ACCOUNT", DEFAULT_BLOCK),
 )
-save_block(snowflake_creds, DEFAULT_BLOCK)
+save_block(snowflake_creds)
 
 
 snowflake_connector = SnowflakeConnector(
-    schema=os.environ.get("SNOWFLAKE_SCHEMA", "dummy"),
-    database=os.environ.get("SNOWFLAKE_DATABASE", "dummy"),
-    warehouse=os.environ.get("SNOWFLAKE_WAREHOUSE", "dummy"),
+    schema=os.environ.get("SNOWFLAKE_SCHEMA", DEFAULT_BLOCK),
+    database=os.environ.get("SNOWFLAKE_DATABASE", DEFAULT_BLOCK),
+    warehouse=os.environ.get("SNOWFLAKE_WAREHOUSE", DEFAULT_BLOCK),
     credentials=SnowflakeCredentials.load(DEFAULT_BLOCK),
 )
-save_block(snowflake_connector, DEFAULT_BLOCK)
+save_block(snowflake_connector)
 
 
 dbt_cli_profile = DbtCliProfile(
@@ -55,7 +55,13 @@ dbt_cli_profile = DbtCliProfile(
 save_block(dbt_cli_profile)
 
 pd = SnowflakePandas(snowflake_connector=SnowflakeConnector.load(DEFAULT_BLOCK))
-save_block(pd, DEFAULT_BLOCK)
+save_block(pd)
+
+dbt_cloud = DbtCloudCredentials(
+    account_id=os.environ.get("DBT_CLOUD_ACCOUNT_ID", 12345),
+    api_key=os.environ.get("DBT_CLOUD_API_KEY", DEFAULT_BLOCK),
+)
+save_block(dbt_cloud)
 
 dbt_jaffle_shop = Dbt(
     workspace=Workspace.load(DEFAULT_BLOCK),
@@ -73,23 +79,31 @@ dbt_attribution = Dbt(
 )
 save_block(dbt_attribution, "attribution")
 
-s3 = S3(
-    bucket_path=os.environ.get("AWS_S3_BUCKET_NAME", "dummy"),
-    aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID", "dummy"),
-    aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY", "dummy"),
+gh = GitHub(
+    repository="https://github.com/anna-geller/prefect-dataplatform.git",
+    reference=os.environ.get("GITHUB_DATAPLATFORM_BRANCH", "main"),
+    # access_token is needed for private repositories, supported in Prefect>=2.6.2
+    # access_token=os.environ.get("GITHUB_PERSONAL_ACCESS_TOKEN", DEFAULT_BLOCK),
 )
-save_block(s3, DEFAULT_BLOCK)
+save_block(gh)
+
+s3 = S3(
+    bucket_path=os.environ.get("AWS_S3_BUCKET_NAME", DEFAULT_BLOCK),
+    aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID", DEFAULT_BLOCK),
+    aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY", DEFAULT_BLOCK),
+)
+save_block(s3)
 
 az = Azure(
-    bucket_path=os.environ.get("AZURE_BUCKET_PATH", "dummy"),
+    bucket_path=os.environ.get("AZURE_BUCKET_PATH", DEFAULT_BLOCK),
     azure_storage_connection_string=os.environ.get(
-        "AZURE_STORAGE_CONNECTION_STRING", "dummy"
+        "AZURE_STORAGE_CONNECTION_STRING", DEFAULT_BLOCK
     ),
 )
-save_block(az, DEFAULT_BLOCK)
+save_block(az)
 
 gcs = GCS(
-    bucket_path=os.environ.get("GCS_BUCKET_PATH", "dummy"),
-    service_account_info=os.environ.get("GCS_SERVICE_ACCOUNT_INFO", "dummy"),
+    bucket_path=os.environ.get("GCS_BUCKET_PATH", DEFAULT_BLOCK),
+    service_account_info=os.environ.get("GCS_SERVICE_ACCOUNT_INFO", DEFAULT_BLOCK),
 )
-save_block(gcs, DEFAULT_BLOCK)
+save_block(gcs)
