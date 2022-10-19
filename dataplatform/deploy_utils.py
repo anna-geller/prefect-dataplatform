@@ -17,3 +17,7 @@ def save_block(block_obj, name: str = DEFAULT_BLOCK) -> None:
     uuid = block_obj.save(name, overwrite=True)
     slug = block_obj.dict().get("block_type_slug")
     print(f"Created block {slug}/{name} with ID: {uuid}")
+
+
+def bash(command: str):
+    subprocess.run(command, shell=True)
