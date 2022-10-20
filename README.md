@@ -47,42 +47,42 @@ Note that you can add tags and schedule directly from the UI, so we deliberately
 
 ## Running flows in a local process
 
-[01_deploy_locally.py](01_deploy_locally.py)
+[deploy_locally.py](deploy_locally.py)
 
 ```bash
-python 01_deploy_locally.py
+python deploy_locally.py
 ```
 
 ## Running flows in a Docker container
 
-[02_deploy_locally_docker.py](02_deploy_locally_docker.py)
+[deploy_locally_docker.py](deploy_locally_docker.py)
 
 ```bash
-python 02_deploy_locally_docker.py
+python deploy_locally_docker.py
 ```
 
 ## Running flows in a Kubernetes job
 
-[03_deploy_locally_k8s.py](03_deploy_locally_k8s.py)
+[deploy_locally_k8s.py](deploy_locally_k8s.py)
 
 ```bash
-python 03_deploy_locally_k8s.py
+python deploy_locally_k8s.py
 ```
 
 ## Deploy to AWS with Docker and S3
 
-[04_deploy_docker_s3.py](04_deploy_docker_s3.py)
+[deploy_docker_s3.py](deploy_docker_s3.py)
 
 ```bash
-python 04_deploy_docker_s3.py
+python deploy_docker_s3.py
 ```
 
 ## Deploy to AWS with Kubernetes and S3
 
-[05_deploy_k8s_s3.py](05_deploy_k8s_s3.py)
+[deploy_k8s_s3.py](deploy_k8s_s3.py)
 
 ```bash
-python 05_deploy_k8s_s3.py
+python deploy_k8s_s3.py
 ```
 
 # Dev vs. Prod environments

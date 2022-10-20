@@ -17,10 +17,4 @@ You can install the package from the root project directory:
 pip install .
 ```
 
-Then, you can register blocks from this package:
-```
-prefect block register -m dataplatform.blocks
-python dataplatform/create_blocks/01_workspace.py
-```
-
-Them, you can create your blocks either from the UI, or using code as shown in the `create_blocks` directory.
+Then, you can create your blocks using the code as shown in the `create_blocks` directory.
