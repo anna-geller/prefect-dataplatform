@@ -1,7 +1,7 @@
 python-dotenv
 prefect
 prefect-dbt
-prefect-snowflake
+prefect-snowflake>=1.4.3
 dbt-snowflake
 sqlalchemy
 snowflake-sqlalchemy
