@@ -1,5 +1,3 @@
-import contextlib
-
 import pandas as pd
 from prefect.blocks.core import Block
 from prefect_snowflake.database import SnowflakeConnector
@@ -11,10 +9,10 @@ class SnowflakePandas(Block):
     """
     Interact with a Snowflake schema using Pandas.
     Requires pandas and snowflake-sqlalchemy packages to be installed.
-    
+
     Args:
         snowflake_connector (SnowflakeConnector): Schema and credentials for a Snowflake schema.
-    
+
     Example:
         Load stored block:
         ```python
@@ -38,26 +36,14 @@ class SnowflakePandas(Block):
         warehouse = self.snowflake_connector.warehouse
         return f"snowflake://{usr}:{pwd}@{acc_id}/{db}/{schema}?warehouse={warehouse}&role={role}"
 
-    def _get_conn_engine(self):
-        conn_string = self._get_connection_string()
-        return create_engine(conn_string)
-
-    @contextlib.contextmanager
-    def _get_connection(self):
-        db_engine = self._get_conn_engine()
-        conn = db_engine.connect()
-        try:
-            yield conn
-        finally:
-            conn.close()
-
     def read_sql(self, table_or_query: str) -> pd.DataFrame:
         db = self._get_connection_string()
         engine = create_engine(db)
         return pd.read_sql(table_or_query, engine)
 
     def load_raw_data(self, dataframe: pd.DataFrame, table_name: str) -> None:
-        db_engine = self._get_conn_engine()
+        conn_string = self._get_connection_string()
+        db_engine = create_engine(conn_string)
         dataframe.to_sql(
             table_name,
             schema=self.snowflake_connector.schema_,

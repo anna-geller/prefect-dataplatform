@@ -83,8 +83,8 @@ def raw_data_jaffle_shop(
         dataset_size: int = 10_000,  # parametrized for backfills
 ):
     ingest_raw_customers.submit(dataset_size)
-    ingest_raw_orders.submit(dataset_size, start_date, end_date)
     ingest_raw_payments.submit(dataset_size)
+    ingest_raw_orders.submit(dataset_size, start_date, end_date)
 
 
 if __name__ == "__main__":
