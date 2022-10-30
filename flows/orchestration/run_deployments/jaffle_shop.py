@@ -10,10 +10,13 @@ def jaffle_shop_parent(
     dataset_size: int = 10_000,
     ingest: str = "raw-data-jaffle-shop",
     transform: str = "dbt-jaffle-shop",
+    deployment_name: str = "default",
 ):
     params = dict(start_date=start_date, end_date=end_date, dataset_size=dataset_size)
-    run_deployment(name=f"{ingest}/default", flow_run_name=ingest, parameters=params)
-    run_deployment(name=f"{transform}/default", flow_run_name=transform)
+    run_deployment(
+        name=f"{ingest}/{deployment_name}", flow_run_name=ingest, parameters=params
+    )
+    run_deployment(name=f"{transform}/{deployment_name}", flow_run_name=transform)
 
 
 if __name__ == "__main__":
