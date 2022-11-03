@@ -5,6 +5,7 @@ from dataplatform.blocks.snowflake_pandas import SnowflakePandas
 from dataplatform.environment import get_env
 from dataplatform.deploy_utils import save_block, DEFAULT_BLOCK
 import os
+import json
 from prefect_snowflake.credentials import SnowflakeCredentials
 from prefect_snowflake.database import SnowflakeConnector
 from prefect_dbt.cli.configs import SnowflakeTargetConfigs
@@ -104,6 +105,10 @@ save_block(az)
 
 gcs = GCS(
     bucket_path=os.environ.get("GCS_BUCKET_PATH", DEFAULT_BLOCK),
-    service_account_info=os.environ.get("GCS_SERVICE_ACCOUNT_INFO", DEFAULT_BLOCK),
+    service_account_info=str(
+        json.load(
+            open(os.environ.get("GCS_SERVICE_ACCOUNT_INFO", "utilities/dummy_sa.json"))
+        )
+    ),
 )
 save_block(gcs)

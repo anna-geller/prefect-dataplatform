@@ -1,10 +1,10 @@
 python-dotenv
 prefect
 prefect-dbt
-prefect-snowflake>=1.4.3
+prefect-snowflake
 dbt-snowflake
 sqlalchemy
-snowflake-sqlalchemy
+snowflake-sqlalchemy>=1.4.3
 pandas
 pygit2
 Faker
