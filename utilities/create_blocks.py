@@ -112,3 +112,18 @@ gcs = GCS(
     ),
 )
 save_block(gcs)
+
+
+gh_dbt_jaffle_shop = GitHub(
+    repository="https://github.com/anna-geller/dbt-jaffle-shop.git",
+    reference="main",
+    access_token=os.environ.get("GITHUB_PERSONAL_ACCESS_TOKEN", "dummy"),
+)
+gh_dbt_jaffle_shop.save("dbt-jaffle-shop", overwrite=True)
+
+gh_dbt_attribution = GitHub(
+    repository="https://github.com/anna-geller/dbt-attribution.git",
+    reference="main",
+    access_token=os.environ.get("GITHUB_PERSONAL_ACCESS_TOKEN", "dummy"),
+)
+gh_dbt_attribution.save("dbt-attribution", overwrite=True)

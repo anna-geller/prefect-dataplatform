@@ -5,9 +5,10 @@ if __name__ == "__main__":
         "dbt-cli-profile/default",
         "dbt/attribution",
         "dbt/jaffle-shop",
+        "dbt-cloud-credentials/default",
         "snowflake-connector/default",
         "snowflake-credentials/default",
-        "snowflake-schema/default",
+        "snowflake-pandas/default",
         "workspace/default",
         "azure/default",
         "s3/default",
@@ -16,6 +17,9 @@ if __name__ == "__main__":
         "kubernetes-job/default",
         "process/default",
         "slack-webhook/default",
+        "github/default",
+        "github/dbt-jaffle-shop",
+        "github/dbt-attribution",
     ]
     for block in blocks:
         subprocess.run(f"prefect block delete {block}", shell=True)

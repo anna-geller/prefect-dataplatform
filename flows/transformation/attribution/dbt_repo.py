@@ -1,8 +1,8 @@
-from pathlib import Path
+import shutil
 from prefect import flow
+from prefect.filesystems import GitHub
 from prefect_dbt.cli.commands import trigger_dbt_cli_command
 from prefect_dbt.cli.credentials import DbtCliProfile
-from dataplatform.repository import pull_repo
 
 
 def dbt(command: str, path: str) -> None:
@@ -15,17 +15,15 @@ def dbt(command: str, path: str) -> None:
 
 
 @flow(retries=3, retry_delay_seconds=30)
-def dbt_cloned_repo(
+def dbt_attribution(
     dbt_command: str = "dbt build",
-    repository: str = "jaffle_shop",
-    github_organization: str = "anna-geller",
-    path: str = Path(__file__)
-    .parent.parent.parent.parent.joinpath("jaffle_shop")
-    .expanduser(),
+    repository: str = "dbt-attribution",
 ):
-    pull_repo(repo=repository, org=github_organization, path=path)
-    dbt(dbt_command, path)
+    shutil.rmtree(repository, ignore_errors=True)
+    gh = GitHub.load(repository)
+    gh.get_directory(local_path=repository)
+    dbt(dbt_command, repository)
 
 
 if __name__ == "__main__":
-    dbt_cloned_repo()
+    dbt_attribution()

@@ -42,6 +42,10 @@ if __name__ == "__main__":
         tags = "-t dbt"
         bash(f"{build} {ib} {sb} {su} {wq} {flow} {tags} -n simple-{name} -a")
 
+    for flow in cfg.dbt_from_repo:
+        tags = "-t dbt"
+        bash(f"{build} {ib} {sb} {su} {wq} {flow} {tags} -n dbt-repo-{name} -a")
+
     for flow in cfg.analytics:
         tags = "-t Analytics"
         bash(f"{build} {ib} {sb} {su} {wq} {flow} {tags} -n {name} -a")
