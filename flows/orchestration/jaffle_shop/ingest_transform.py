@@ -8,7 +8,7 @@ from flows.ml.sales_forecast import sales_forecast
 
 @flow
 def jaffle_shop_ingest_transform(
-    start_date: date = date(2020, 2, 1),  # parametrized for backfills
+    start_date: date = date(2022, 11, 1),  # parametrized for backfills
     end_date: date = date.today(),
     dataset_size: int = 10_000,
 ):

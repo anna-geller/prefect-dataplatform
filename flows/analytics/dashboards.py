@@ -19,7 +19,7 @@ def update_sales_dashboards() -> None:
 
 @task
 def extract_current_kpis() -> Dict[str, Any]:
-    sql_revenue = "SELECT sum(REVENUE) as revenue FROM STG_CUSTOMER_CONVERSIONS;"
+    sql_revenue = "SELECT SUM(REVENUE) as revenue FROM STG_CUSTOMER_CONVERSIONS;"
     sql_orders = "SELECT COUNT(ORDER_ID) as nr_orders FROM ORDERS;"
     block = SnowflakePandas.load("default")
     revenue = block.read_sql(sql_revenue)["revenue"][0]

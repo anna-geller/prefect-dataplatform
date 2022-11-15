@@ -7,7 +7,7 @@ from flows.transformation.attribution.dbt_build import dbt_attribution
 
 @flow
 def attribution_ingest_transform(
-    start_date: date = date(2020, 2, 1),  # parametrized for backfills
+    start_date: date = date(2022, 11, 1),  # parametrized for backfills
     end_date: date = date.today(),
     interval: Frequency = "D",
 ):
