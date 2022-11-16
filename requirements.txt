@@ -9,3 +9,4 @@ pandas
 pygit2
 Faker
 s3fs
+awswrangler

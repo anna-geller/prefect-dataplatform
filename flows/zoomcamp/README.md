@@ -4,12 +4,27 @@ The flows in this directory demonstrate data ingestion to Postgres and BigQuery.
 
 # Setup
 
-Once you have a virtual environment ready, install the dataplatform module (and all dependent libraries including Prefect) from the root project directory using the following command:
+Once you have a virtual environment ready (not needed if you leverage GitHub Codespaces), install the dataplatform module (and all dependent libraries including Prefect) from the root project directory using the following command:
 
 ```bash
 pip install -e .
+pip install -r requirements-gcp.txt
 ```
 
+## Authenticate with Cloud
+
+To authenticate with Cloud, create an API key in your Prefect Cloud workspace. Then, run this command from a terminal:
+
+```bash
+prefect cloud login
+```
+
+Paste your API key, then select your workspace and give a name to the CLI profile - I named mine `dev`. 
+
+![img_6.png](img_6.png)
+
+
+## Postgres setup
 Then, start a container running postgres using the command:
 
 ```bash
@@ -17,6 +32,33 @@ docker run --restart always --name postgres14 --net dev -v postgres_data:/var/li
 ```
 
 > Alternatively, you can connect to a postgres database in other way (e.g. using your existing DB). In that case, make sure to adjust the credentials on the Postgres block [create_blocks.py](create_blocks.py).
+
+
+## AWS CLI setup
+
+If you haven't already, sign up for a free account on AWS and create an IAM user with programmatic access to S3. This way you can use this well-structured dataset [maintained by AWS](https://registry.opendata.aws/nyc-tlc-trip-records-pds/). 
+
+Then, download AWS CLI using:
+
+```bash
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+```
+
+Then, run:
+```bash
+aws configure
+```
+
+Enter your IAM user credentials. Your AWS CLI setup is complete. 
+
+## Alternative setup
+
+If you don't want to create a free AWS account, replace `extract_from_s3` with `extract_no_aws`. 
+Also replace `get_files_to_process` with `get_files_to_process_no_aws` in your both `taxi_data` flows:
+- [ingestion_postgres_taxi_data.py](ingestion_postgres_taxi_data.py)
+- [ingestion_bigquery_taxi_data.py](ingestion_bigquery_taxi_data.py)
 
 
 # Create blocks
