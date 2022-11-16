@@ -1,3 +1,5 @@
+awswrangler
+psycopg2
 prefect-gcp
 pydata-google-auth
 google-auth

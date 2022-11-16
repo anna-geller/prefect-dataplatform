@@ -28,7 +28,7 @@ Paste your API key, then select your workspace and give a name to the CLI profil
 Then, start a container running postgres using the command:
 
 ```bash
-docker run --restart always --name postgres14 --net dev -v postgres_data:/var/lib/postgresql/data -p 5432:5432 -d -e POSTGRES_PASSWORD=postgres postgres:14
+docker run --restart always --name postgres14 --network host -v postgres_data:/var/lib/postgresql/data -p 5432:5432 -d -e POSTGRES_PASSWORD=postgres postgres:14
 ```
 
 > Alternatively, you can connect to a postgres database in other way (e.g. using your existing DB). In that case, make sure to adjust the credentials on the Postgres block [create_blocks.py](create_blocks.py).
@@ -59,6 +59,8 @@ If you don't want to create a free AWS account, replace `extract_from_s3` with `
 Also replace `get_files_to_process` with `get_files_to_process_no_aws` in your both `taxi_data` flows:
 - [ingestion_postgres_taxi_data.py](ingestion_postgres_taxi_data.py)
 - [ingestion_bigquery_taxi_data.py](ingestion_bigquery_taxi_data.py)
+
+This way, you'll read data from https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page directly.
 
 
 # Create blocks
@@ -104,6 +106,8 @@ block = BigQueryPandas.load("default")
 block.create_dataset_if_not_exists(dataset)
 block.load_data(dataframe=df, table_name=tbl, if_exists="replace")
 ```
+
+![img_7.png](img_7.png)
 
 ---
 # Taxi dataset
