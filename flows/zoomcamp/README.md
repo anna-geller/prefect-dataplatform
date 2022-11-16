@@ -96,6 +96,7 @@ You can also inspect the flow run from the Prefect UI:
 If you run your setup from GitHub codespaces, you can use the CLI to query the data:
 ```bash
 docker exec -it postgres14 psql -U postgres postgres 
+
 select file, count(*) as nr_rows from yellow_tripdata group by file order by file;
 SELECT * FROM yellow_tripdata LIMIT 5;
 SELECT * FROM raw_customers LIMIT 5;
