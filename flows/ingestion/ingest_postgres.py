@@ -12,7 +12,7 @@ def extract(dataset: str) -> pd.DataFrame:
 @flow
 def extract_and_load() -> None:
     logger = get_run_logger()
-    block = Postgres.load("default")
+    block = Postgres.load_to_postgres("default")
     datasets = ["raw_customers", "raw_orders", "raw_payments"]
     for dataset in datasets:
         df = extract(dataset)

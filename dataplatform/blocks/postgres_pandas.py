@@ -51,18 +51,20 @@ class PostgresPandas(Block):
         engine = create_engine(db)
         return pd.read_sql(table_or_query, engine)
 
-    def load_data(self, dataframe: pd.DataFrame, table_name: str) -> None:
+    def load_data(
+        self, dataframe: pd.DataFrame, table_name: str, if_exists="replace"
+    ) -> None:
         conn_string = self._get_connection_string()
         db_engine = create_engine(conn_string)
         dataframe.to_sql(
             table_name,
             schema=self.db_schema,
             con=db_engine,
-            if_exists="replace",
+            if_exists=if_exists,
             index=False,
         )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     postgres_block = PostgresPandas(user_name="postgres", password="postgres")
     postgres_block.save("default", overwrite=True)
