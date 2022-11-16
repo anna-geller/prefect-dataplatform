@@ -21,7 +21,7 @@ prefect cloud login
 
 Paste your API key, then select your workspace and give a name to the CLI profile - I named mine `dev`. 
 
-![img_6.png](img_6.png)
+![img_6.png](images/img_6.png)
 
 
 ## Postgres setup
@@ -69,7 +69,7 @@ This way, you'll read data from https://www.nyc.gov/site/tlc/about/tlc-trip-reco
 
 Create a `GcpCredentials` block - the easiest way to do it is from the UI. Make sure to paste your service account information from your JSON file into the `service_account_info` block's field.
 
-![img.png](img.png)
+![img.png](images/img.png)
 
 ## Custom blocks
 
@@ -89,10 +89,10 @@ You can start with the jaffle-shop example ingesting data to Postgres in the flo
 
 Once you run this flow, your Postgres should show those three new tables. You can query and inspect those from your favorite SQL client (*here, I'm using Datagrip*):
 
-![img_2.png](img_2.png)
+![img_2.png](images/img_2.png)
 
 You can also inspect the flow run from the Prefect UI:
-![img_1.png](img_1.png)
+![img_1.png](images/img_1.png)
 
 
 ## BigQuery
@@ -107,7 +107,7 @@ block.create_dataset_if_not_exists(dataset)
 block.load_data(dataframe=df, table_name=tbl, if_exists="replace")
 ```
 
-![img_7.png](img_7.png)
+![img_7.png](images/img_7.png)
 
 ---
 # Taxi dataset
@@ -128,13 +128,13 @@ Taxi dataset is large, and Postgres is an OLTP database (made for transactions, 
 
 After you ran the flow, your Prefect UI should show a similar flow run:
 
-![img_3.png](img_3.png)
+![img_3.png](images/img_3.png)
 
 It includes a long list of extract, transform and load task for each file. 
 
 You can continue exploring the data in SQL:
 
-![img_4.png](img_4.png)
+![img_4.png](images/img_4.png)
 
 ## BigQuery
 
@@ -189,4 +189,4 @@ Once the flow finishes, you'll be able to view the following information on the 
 
 You can inspect that data in BigQuery and you should see that this data is pretty large:
 
-![img_5.png](img_5.png)
+![img_5.png](images/img_5.png)

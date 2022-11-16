@@ -3,7 +3,7 @@ select file, count(*) as nr_rows from yellow_tripdata group by file order by fil
 """
 from dataplatform.tasks import (
     get_files_to_process,
-    extract_from_s3,
+    extract,
     transform,
     load_to_postgres,
 )
@@ -17,7 +17,7 @@ def ingestion_postgres_taxi_data(
     file: str = "yellow_tripdata_2022-01.parquet",
     if_exists: str = "append",
 ) -> None:
-    df = extract_from_s3.with_options(name=f"extract_{file}")(file)
+    df = extract.with_options(name=f"extract_{file}")(file)
     df = transform.with_options(name=f"transform_{file}")(df, file)
     load_to_postgres.with_options(name=f"🚀load_{table}")(df, table, if_exists)
 
@@ -31,7 +31,7 @@ def parent_ingestion_postgres_taxi_data(
 ) -> None:
     files = get_files_to_process(year, service_type)
     for file in files:
-        df = extract_from_s3.with_options(name=f"extract_{file}").submit(file)
+        df = extract.with_options(name=f"extract_{file}").submit(file)
         df = transform.with_options(name=f"transform_{file}").submit(
             df, file, service_type
         )

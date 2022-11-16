@@ -6,7 +6,7 @@ prefect deployment build flows/zoomcamp/ingestion_bigquery_taxi_data.py:parent -
 """
 from datetime import datetime
 from dataplatform.blocks import BigQueryPandas
-from dataplatform.tasks import get_files_to_process, extract_from_s3, transform
+from dataplatform.tasks import get_files_to_process, extract, transform
 import pandas as pd
 from prefect import task, flow, get_run_logger
 from prefect.blocks.system import JSON
@@ -73,7 +73,7 @@ def taxi_data(
     tbl = f"{dataset}.{table_name}"
     block = BigQueryPandas.load("default")
     block.create_dataset_if_not_exists(dataset)
-    df = extract_from_s3.with_options(name=f"extract_{file}").submit(file)
+    df = extract.with_options(name=f"extract_{file}").submit(file)
     df = transform.with_options(name=f"transform_{file}").submit(df, file)
     load.with_options(name=f"load_{file}").submit(df, file, tbl, if_exists=if_exists)
     update_pocessed_files.with_options(name=f"update_block_{file}").submit(
@@ -99,12 +99,12 @@ def parent(
             .submit(file, service_type)
             .result()
         ):
-            df = extract_from_s3.with_options(name=f"extract_{file}").submit(file)
+            df = extract.with_options(name=f"extract_{file}").submit(file)
             df = transform.with_options(name=f"transform_{file}").submit(
                 df.result(), file
             )
             load.with_options(name=f"load_{file}").submit(
-                df.result(), file, tbl, if_exists=if_exists
+                df.result().head(100), file, tbl, if_exists=if_exists  # TODO remove .head(100) to load full dataset
             )
             update_pocessed_files.with_options(name=f"update_block_{file}").submit(
                 df.result(), file, tbl, service_type
@@ -112,5 +112,5 @@ def parent(
 
 
 if __name__ == "__main__":
-    taxi_data(if_exists="replace")
-    # parent()
+    # taxi_data(if_exists="replace")
+    parent()
