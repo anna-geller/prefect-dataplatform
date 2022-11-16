@@ -1,6 +1,6 @@
+from platform import node, platform, python_version
 import prefect
 from prefect import flow, get_run_logger
-from platform import node, platform, python_version
 from prefect.orion.api.server import ORION_API_VERSION as API
 
 

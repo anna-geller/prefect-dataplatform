@@ -1,10 +1,11 @@
 import json
-from typing import Any
 from prefect.blocks.core import Block
-from pydantic import Field
-from dataplatform.blocks.workspace import Workspace
 from prefect_dbt.cli.commands import trigger_dbt_cli_command
 from prefect_dbt.cli.credentials import DbtCliProfile
+from pydantic import Field
+from typing import Any
+
+from dataplatform.blocks.workspace import Workspace
 
 
 class Dbt(Block):

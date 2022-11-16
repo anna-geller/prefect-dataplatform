@@ -8,7 +8,7 @@ Once you have a virtual environment ready (not needed if you leverage GitHub Cod
 
 ```bash
 pip install -e .
-pip install -r requirements-gcp.txt
+pip install -r requirements-zoomcamp.txt
 ```
 
 ## Authenticate with Cloud
@@ -34,9 +34,11 @@ docker run --restart always --name postgres14 --network host -v postgres_data:/v
 > Alternatively, you can connect to a postgres database in other way (e.g. using your existing DB). In that case, make sure to adjust the credentials on the Postgres block [create_blocks.py](create_blocks.py).
 
 
-## AWS CLI setup
+## Optional: AWS CLI setup
 
-If you haven't already, sign up for a free account on AWS and create an IAM user with programmatic access to S3. This way you can use this well-structured dataset [maintained by AWS](https://registry.opendata.aws/nyc-tlc-trip-records-pds/). 
+The default setup is downloading data directly from https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page. If you want to, you could get a more realistic setup by reading this data from AWS S3. The same Taxi dataset is [maintained by AWS](https://registry.opendata.aws/nyc-tlc-trip-records-pds/) in the OpenData registry.
+
+If you haven't already, sign up for a free account on AWS and create an IAM user with programmatic access to S3. 
 
 Then, download AWS CLI using:
 
@@ -53,14 +55,11 @@ aws configure
 
 Enter your IAM user credentials. Your AWS CLI setup is complete. 
 
-## Alternative setup
+Now you can replace the `extract` step with the `extract_from_s3`.
 
-If you don't want to create a free AWS account, replace `extract_from_s3` with `extract_no_aws`. 
-Also replace `get_files_to_process` with `get_files_to_process_no_aws` in your both `taxi_data` flows:
+Also replace `get_files_to_process` with `get_files_to_process_aws` in your both `taxi_data` flows:
 - [ingestion_postgres_taxi_data.py](ingestion_postgres_taxi_data.py)
 - [ingestion_bigquery_taxi_data.py](ingestion_bigquery_taxi_data.py)
-
-This way, you'll read data from https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page directly.
 
 
 # Create blocks
@@ -93,6 +92,16 @@ Once you run this flow, your Postgres should show those three new tables. You ca
 
 You can also inspect the flow run from the Prefect UI:
 ![img_1.png](images/img_1.png)
+
+If you run your setup from GitHub codespaces, you can use the CLI to query the data:
+```bash
+docker exec -it postgres14 psql -U postgres postgres 
+select file, count(*) as nr_rows from yellow_tripdata group by file order by file;
+SELECT * FROM yellow_tripdata LIMIT 5;
+SELECT * FROM raw_customers LIMIT 5;
+SELECT * FROM raw_orders LIMIT 5;
+SELECT * FROM raw_payments LIMIT 5;
+```
 
 
 ## BigQuery

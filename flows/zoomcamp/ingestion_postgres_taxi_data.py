@@ -1,14 +1,15 @@
 """
 select file, count(*) as nr_rows from yellow_tripdata group by file order by file;
 """
+from prefect import flow
+from prefect.task_runners import SequentialTaskRunner
+
 from dataplatform.tasks import (
     get_files_to_process,
     extract,
     transform,
     load_to_postgres,
 )
-from prefect import flow
-from prefect.task_runners import SequentialTaskRunner
 
 
 @flow  # running without task runner, tasks executed in a flow run process sequentially
@@ -42,4 +43,3 @@ def parent_ingestion_postgres_taxi_data(
 
 if __name__ == "__main__":
     parent_ingestion_postgres_taxi_data()
-    # ingestion_postgres_taxi_data()

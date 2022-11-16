@@ -1,8 +1,8 @@
-import shutil
 from prefect import flow
 from prefect.filesystems import GitHub
 from prefect_dbt.cli.commands import trigger_dbt_cli_command
 from prefect_dbt.cli.credentials import DbtCliProfile
+import shutil
 
 
 def dbt(command: str, path: str) -> None:

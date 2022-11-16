@@ -2,9 +2,10 @@
 Note: this K8s manifest requires a Prefect Cloud workspace, for OSS K8s deployment, consider https://github.com/PrefectHQ/prefect-helm
 prefect kubernetes manifest agent --work-queue default --image-tag prefecthq/prefect:2-python3.9 --namespace default | kubectl apply --namespace=default -f -
 """
-import flows.entrypoints_config as cfg
-from dataplatform.deploy_utils import build_image, save_block, bash
 from prefect.infrastructure import KubernetesJob
+
+from dataplatform.deploy_utils import build_image, save_block, bash
+import flows.entrypoints_config as cfg
 
 deploy_agent = True
 image_agent = "prefecthq/prefect:2-python3.9"

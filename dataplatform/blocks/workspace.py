@@ -1,10 +1,9 @@
-from typing import Any
-from uuid import UUID
-
 from prefect.blocks.core import Block
 from prefect.blocks.notifications import SlackWebhook
 from prefect.settings import PREFECT_API_URL
 from pydantic import Field
+from typing import Any
+from uuid import UUID
 
 
 class Workspace(Block):

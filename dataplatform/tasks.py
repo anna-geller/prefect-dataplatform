@@ -3,12 +3,13 @@ Example file to download: https://d37ci6vzurychx.cloudfront.net/trip-data/yellow
 """
 import awswrangler as wr
 from datetime import datetime
-from typing import List
 import pandas as pd
 from prefect import task, get_run_logger
-from dataplatform.blocks.postgres_pandas import PostgresPandas
+from typing import List
 from urllib.error import HTTPError
 from urllib.request import urlopen
+
+from dataplatform.blocks.postgres_pandas import PostgresPandas
 
 
 MAIN_URL = "https://d37ci6vzurychx.cloudfront.net/trip-data/"

@@ -1,18 +1,19 @@
 from dotenv import load_dotenv
-from dataplatform.blocks.dbt import Dbt
-from dataplatform.blocks.workspace import Workspace
-from dataplatform.blocks.snowflake_pandas import SnowflakePandas
-from dataplatform.environment import get_env
-from dataplatform.deploy_utils import save_block, DEFAULT_BLOCK
-import os
 import json
-from prefect_snowflake.credentials import SnowflakeCredentials
-from prefect_snowflake.database import SnowflakeConnector
+import os
+from prefect.blocks.notifications import SlackWebhook
+from prefect.filesystems import S3, GCS, Azure, GitHub
 from prefect_dbt.cli.configs import SnowflakeTargetConfigs
 from prefect_dbt.cli.credentials import DbtCliProfile
 from prefect_dbt.cloud import DbtCloudCredentials
-from prefect.filesystems import S3, GCS, Azure, GitHub
-from prefect.blocks.notifications import SlackWebhook
+from prefect_snowflake.credentials import SnowflakeCredentials
+from prefect_snowflake.database import SnowflakeConnector
+
+from dataplatform.blocks.dbt import Dbt
+from dataplatform.blocks.snowflake_pandas import SnowflakePandas
+from dataplatform.blocks.workspace import Workspace
+from dataplatform.deploy_utils import save_block, DEFAULT_BLOCK
+from dataplatform.environment import get_env
 
 
 load_dotenv()

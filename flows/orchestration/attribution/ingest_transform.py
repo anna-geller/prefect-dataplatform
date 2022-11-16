@@ -1,5 +1,6 @@
 from datetime import date
 from prefect import flow
+
 from flows.ingestion.marketing_config import Frequency
 from flows.ingestion.ingest_marketing_data import raw_data_marketing
 from flows.transformation.attribution.dbt_build import dbt_attribution

@@ -1,6 +1,7 @@
-import flows.entrypoints_config as cfg
 from prefect.infrastructure import Process
+
 from dataplatform.deploy_utils import save_block, bash
+import flows.entrypoints_config as cfg
 
 name = "local-process"
 queue_and_blocks_name = "default"

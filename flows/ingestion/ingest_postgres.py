@@ -1,6 +1,7 @@
 import pandas as pd
 from prefect import task, flow, get_run_logger
-from dataplatform.blocks import Postgres
+
+from dataplatform.blocks import PostgresPandas
 
 
 @task
@@ -12,7 +13,7 @@ def extract(dataset: str) -> pd.DataFrame:
 @flow
 def extract_and_load() -> None:
     logger = get_run_logger()
-    block = Postgres.load_to_postgres("default")
+    block = PostgresPandas.load_to_postgres("default")
     datasets = ["raw_customers", "raw_orders", "raw_payments"]
     for dataset in datasets:
         df = extract(dataset)

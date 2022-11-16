@@ -1,6 +1,7 @@
 from prefect import flow
-from dataplatform.tasks import load_to_postgres, extract_jaffle_shop
 from typing import List
+
+from dataplatform.tasks import load_to_postgres, extract_jaffle_shop
 
 
 @flow

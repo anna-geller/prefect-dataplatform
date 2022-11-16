@@ -1,4 +1,3 @@
-awswrangler
 psycopg2
 prefect-gcp
 pydata-google-auth
@@ -8,3 +7,4 @@ google-cloud-bigquery
 google-cloud-bigquery-storage
 pandas-gbq
 google-cloud-storage
+# awswrangler # TODO optional

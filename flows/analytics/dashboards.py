@@ -1,6 +1,7 @@
 from prefect import task, flow, get_run_logger
-from dataplatform.blocks import Workspace, SnowflakePandas
 from typing import Any, Dict
+
+from dataplatform.blocks import Workspace, SnowflakePandas
 
 
 @task

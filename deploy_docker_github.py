@@ -1,6 +1,7 @@
-import flows.entrypoints_config as cfg
-from dataplatform.deploy_utils import build_image, save_block, bash
 from prefect.infrastructure import DockerContainer
+
+from dataplatform.deploy_utils import build_image, save_block, bash
+import flows.entrypoints_config as cfg
 
 image_name = "dataplatform"
 block_name = "default"

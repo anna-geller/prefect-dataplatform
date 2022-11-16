@@ -5,12 +5,13 @@ prefect deployment build flows/zoomcamp/ingestion_bigquery_taxi_data.py:parent -
 prefect deployment build flows/zoomcamp/ingestion_bigquery_taxi_data.py:parent -n yellow -q default -a --param table_name=green_tripdata
 """
 from datetime import datetime
-from dataplatform.blocks import BigQueryPandas
-from dataplatform.tasks import get_files_to_process, extract, transform
 import pandas as pd
 from prefect import task, flow, get_run_logger
 from prefect.blocks.system import JSON
 from prefect.task_runners import SequentialTaskRunner
+
+from dataplatform.blocks import BigQueryPandas
+from dataplatform.tasks import get_files_to_process, extract, transform
 
 
 @task
@@ -104,7 +105,10 @@ def parent(
                 df.result(), file
             )
             load.with_options(name=f"load_{file}").submit(
-                df.result().head(100), file, tbl, if_exists=if_exists  # TODO remove .head(100) to load full dataset
+                df.result().head(100),
+                file,
+                tbl,
+                if_exists=if_exists,  # TODO remove .head(100) to load full dataset
             )
             update_pocessed_files.with_options(name=f"update_block_{file}").submit(
                 df.result(), file, tbl, service_type
@@ -112,5 +116,4 @@ def parent(
 
 
 if __name__ == "__main__":
-    # taxi_data(if_exists="replace")
     parent()

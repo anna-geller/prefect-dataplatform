@@ -1,8 +1,8 @@
 from datetime import date
-
 import numpy as np
 import pandas as pd
 from prefect import flow, task
+
 from flows.ingestion.marketing_config import Frequency, campaigns, channels
 from dataplatform.blocks.snowflake_pandas import SnowflakePandas
 

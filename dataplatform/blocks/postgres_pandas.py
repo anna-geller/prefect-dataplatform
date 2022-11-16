@@ -3,9 +3,9 @@ docker run --restart always --name postgres14 --net dev -v postgres_data:/var/li
 """
 import pandas as pd
 from prefect.blocks.core import Block
+from pydantic import SecretStr
 from sqlalchemy import create_engine
 from typing import Optional
-from pydantic import SecretStr
 
 
 class PostgresPandas(Block):

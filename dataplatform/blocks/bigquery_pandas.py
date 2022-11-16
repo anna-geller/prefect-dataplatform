@@ -12,11 +12,11 @@ pip install google-cloud-storage
 Example query:
 df = block.read_sql("SELECT * FROM project.dataset.table LIMIT 10")
 """
+from google.cloud.exceptions import NotFound
 import pandas as pd
 from prefect.blocks.core import Block
-from typing import Optional
 from prefect_gcp.credentials import GcpCredentials
-from google.cloud.exceptions import NotFound
+from typing import Optional
 
 
 class BigQueryPandas(Block):
