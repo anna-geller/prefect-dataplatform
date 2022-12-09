@@ -1,5 +1,9 @@
 # Data Platform with Prefect, dbt and Snowflake
-Example repository showing how to leverage Prefect, dbt and Snowflake together to build a data platform. This project includes automation to make it maximally easy to use this repositor as a template to get started, and adjust it based on the needs of your team.
+Example repository showing how to leverage Prefect, dbt and Snowflake together to build a data platform. This project includes automation to make it easy to use this repositor as a template to get started, and adjust it based on the needs of your team.
+
+## Blog posts explaining how to use this repo
+
+[How to Build a Modular Data Stack — Data Platform with Prefect, dbt and Snowflake](https://medium.com/the-prefect-blog/how-to-build-a-modular-data-stack-data-platform-with-prefect-dbt-and-snowflake-89f928974e85)
 
 # Dbt commands
 
