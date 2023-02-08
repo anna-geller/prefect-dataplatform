@@ -15,7 +15,6 @@ from dataplatform.blocks.workspace import Workspace
 from dataplatform.deploy_utils import save_block, DEFAULT_BLOCK
 from dataplatform.environment import get_env
 
-
 load_dotenv()
 
 
@@ -26,7 +25,7 @@ save_block(slack)
 workspace = Workspace(
     name=get_env(),
     block_name=DEFAULT_BLOCK,
-    settings=dict(workspace_owner="Data Engineering", environment="Development"),
+    metadata=dict(workspace_owner="Data Engineering", environment="Development"),
 )
 save_block(workspace)
 

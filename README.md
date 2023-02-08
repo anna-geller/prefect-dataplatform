@@ -187,4 +187,4 @@ prefect config set PREFECT_API_KEY=this_must_be_a_different_api_key_as_they_are_
 - simple dbt flows are **parametrized** to make it easy to execute any dbt command for the relevant project
 - all ingestion flows are parametrized to make **backfills** a breeze - just change the start and end date, and the interval in your parameter values when triggering the run, and you can trigger a backfill from the same flow as usual -- see the flow parameters e.g. in the flow [flows/ingestion/ingest_jaffle_shop.py](flows/ingestion/ingest_jaffle_shop.py)
 - optionally, you can track each dbt model or test as a separate task by using the ``dbt_run_from_manifest.py`` logic -- [dataplatform/blocks/dbt.py](dataplatform/blocks/dbt.py)
-- it's fun to use! if you want to change how your dbt tasks look like for Halloween or Christmas, change the emoji on the block 🤗 
+- it's fun to use! if you want to change how your dbt tasks look like for Halloween or Christmas, change the emoji on the block 🤗
